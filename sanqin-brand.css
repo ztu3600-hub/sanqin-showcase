@@ -1,0 +1,30 @@
+/* Keep published dimensions, typography, breakpoints and animation parameters. */
+/* Framer restores coordinates; browser anchoring must not shift them as counters mount. */
+html{overflow-anchor:none}
+img[data-sanqin-logo]{object-fit:contain!important;filter:none!important}
+img[src*="/sanqin-showcase/brand/sanqin/client-"]{object-fit:contain!important}
+img[src*="/sanqin-showcase/brand/sanqin/clients/"]{object-fit:contain!important;filter:none!important}
+img[src*="/sanqin-showcase/brand/sanqin/clients/fangchengbao.svg"]{filter:brightness(0)!important}
+#__framer-badge-container,.__framer-badge{display:none!important}
+.sanqin-nav-logo{background:url('/sanqin-showcase/brand/sanqin/afa64be5b296.webp') center / contain no-repeat!important}
+.sanqin-nav-logo>*{visibility:hidden!important}
+[data-sanqin-video]{overflow:hidden;isolation:isolate}
+.sanqin-video-play{position:absolute;inset:0;z-index:4;width:100%;height:100%;border:0;border-radius:inherit;background:linear-gradient(transparent,rgba(0,0,0,.3));color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;font:inherit}
+.sanqin-video-play span{display:grid;place-items:center;width:70px;height:70px;padding-left:4px;border-radius:50%;background:#f43c00;color:white;font-size:26px;box-shadow:0 8px 40px #0005;transition:transform .25s}
+.sanqin-video-play:hover span{transform:scale(1.08)}
+.sanqin-video-play strong{font-size:15px;text-shadow:0 2px 8px black}
+.sanqin-video-player{position:absolute;inset:0;z-index:3;width:100%;height:100%;border:0;background:black}
+[data-sanqin-video]:not([data-sanqin-playing]) .sanqin-video-player{visibility:hidden}
+@font-face{font-family:'Sanqin Glitch';src:url('/sanqin-showcase/brand/sanqin/ui/RubikGlitch-Regular.ttf') format('truetype');font-style:normal;font-weight:400;font-display:block}
+.framer-jQQTu .framer-t2vf6k h3,.framer-jQQTu .framer-t2vf6k h3 span{font-family:'Sanqin Glitch',sans-serif!important;font-weight:400!important;color:#fff!important;--framer-font-family:'Sanqin Glitch',sans-serif!important;--framer-text-color:#fff!important}
+img[src*="/sanqin-showcase/brand/sanqin/ui/why-manufacturing.webp"]{object-fit:cover!important;object-position:center!important}
+img[src="/sanqin-showcase/brand/sanqin/ui/service-machinery.webp"]{object-fit:cover!important;object-position:center!important}
+/* Show the original official QR in a square, without cropping or stretching. */
+.framer-16ul4j7{box-sizing:content-box!important;width:140px!important;height:140px!important;top:50%!important;left:50%!important;translate:-50% -50%;border:8px solid #fff;border-radius:16px!important;background:#fff}
+.framer-16ul4j7 img[src="/sanqin-showcase/brand/sanqin/ui/official-contact-qr.png"]{object-fit:contain!important;object-position:center!important;border-radius:0!important}
+img[data-sanqin-service]{object-fit:cover!important}
+[data-sanqin-icon]{background-color:var(--1ekdknm,currentColor)!important;background-image:none!important;mask:var(--sanqin-icon) center/contain no-repeat!important;-webkit-mask:var(--sanqin-icon) center/contain no-repeat!important}
+[data-sanqin-icon="phone"]{--sanqin-icon:url('/sanqin-showcase/brand/sanqin/ui/phone.svg')}
+[data-sanqin-icon="mail"]{--sanqin-icon:url('/sanqin-showcase/brand/sanqin/ui/mail.svg')}
+[data-sanqin-icon="folder"]{--sanqin-icon:url('/sanqin-showcase/brand/sanqin/ui/folder.svg')}
+[data-sanqin-icon="building"]{--sanqin-icon:url('/sanqin-showcase/brand/sanqin/ui/building.svg')}
