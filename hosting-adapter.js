@@ -6,6 +6,7 @@ window.fetch=async(input,init)=>{
  let raw=typeof input==='string'?rooted(input):input instanceof URL?input.href:input;
  const u=new URL(typeof raw==='string'?raw:raw.url,location.href);
  const path=u.pathname.startsWith(base+'/')?u.pathname.slice(base.length):u.pathname;
+ if((init?.method||input?.method||'GET').toUpperCase()!=='GET'&&(init?.method||input?.method||'GET').toUpperCase()!=='HEAD')return new Response(JSON.stringify({success:true,demo:true}),{headers:{'Content-Type':'application/json'}});
  if(u.origin===location.origin){
   if(path==='/api/forms')return new Response(JSON.stringify({success:true,demo:true,message:'Demo only; no information is sent or saved.'}),{headers:{'Content-Type':'application/json'}});
   if(path.endsWith('.framercms')&&u.searchParams.has('range')){
@@ -31,6 +32,15 @@ window.fetch=async(input,init)=>{
  }
  return native(raw,init);
 };
+ document.addEventListener('submit',e=>{
+ const form=e.target;if(!(form instanceof HTMLFormElement))return;
+ const path=new URL(form.action,location.href).pathname;
+ if(path.includes('/search')||path.endsWith('/cart/add')||form.matches('[data-node-type="commerce-add-to-cart-form"]'))return;
+ e.preventDefault();e.stopImmediatePropagation();if(!form.reportValidity())return;
+ let status=form.parentElement.querySelector('[data-demo-form-status]');
+ if(!status){status=document.createElement('p');status.dataset.demoFormStatus='true';status.setAttribute('role','status');form.after(status);}
+ status.textContent='演示表单：信息不会发送或保存。 Demo only: no information was sent or saved.';
+ },true);
 function notice(){
  const el=document.createElement('div');el.id='showcase-disclaimer';el.setAttribute('role','note');
  el.style.cssText='position:fixed;bottom:8px;left:8px;right:8px;z-index:2147483647;background:#171717;color:#fff;border:1px solid #777;border-radius:6px;padding:10px 14px;font:12px/1.5 Arial,sans-serif;display:flex;gap:12px;align-items:center;justify-content:space-between';
