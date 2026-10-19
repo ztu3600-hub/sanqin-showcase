@@ -1,9 +1,13 @@
 (()=>{
 const base="/sanqin-showcase", native=window.fetch.bind(window);
 Object.defineProperty(window,'__showcasePath',{get:()=>location.pathname===base+'/'?location.pathname:location.pathname.replace(/\/$/,'')});
-const rooted=x=>typeof x==='string'&&x.startsWith('/')&&!x.startsWith('//')&&!x.startsWith(base+'/')?base+x:x;
+const rooted=x=>{
+ if(typeof x!=='string')return x;
+ if(x.startsWith(location.origin+'/')){const u=new URL(x);return u.pathname.startsWith(base+'/')?x:location.origin+base+u.pathname+u.search+u.hash;}
+ return x.startsWith('/')&&!x.startsWith('//')&&!x.startsWith(base+'/')?base+x:x;
+};
 window.fetch=async(input,init)=>{
- let raw=typeof input==='string'?rooted(input):input instanceof URL?input.href:input;
+ let raw=typeof input==='string'?rooted(input):input instanceof URL?rooted(input.href):input;
  const u=new URL(typeof raw==='string'?raw:raw.url,location.href);
  const path=u.pathname.startsWith(base+'/')?u.pathname.slice(base.length):u.pathname;
  if((init?.method||input?.method||'GET').toUpperCase()!=='GET'&&(init?.method||input?.method||'GET').toUpperCase()!=='HEAD')return new Response(JSON.stringify({success:true,demo:true}),{headers:{'Content-Type':'application/json'}});
@@ -32,7 +36,16 @@ window.fetch=async(input,init)=>{
  }
  return native(raw,init);
 };
- document.addEventListener('submit',e=>{
+const attrs=['src','srcset','poster','href','action','style'];
+function fixAttribute(el,key){
+ const old=el.getAttribute(key);if(!old)return;
+ let value=key==='srcset'?old.replace(/(^|[\s,])(\/(?!\/)[^\s,]+|https?:\/\/[^\s,]+)/g,(m,space,url)=>space+rooted(url)):key==='style'?old.replace(/url\((["']?)(\/[^)'"\s]+)\1\)/g,(m,q,url)=>'url('+q+rooted(url)+q+')'):rooted(old);
+ if(value!==old)el.setAttribute(key,value);
+}
+function fixNode(el){if(el.nodeType!==1)return;for(const node of [el,...el.querySelectorAll('[src],[srcset],[poster],[href],[action],[style]')])for(const key of attrs)fixAttribute(node,key);}
+new MutationObserver(records=>{for(const record of records){if(record.type==='attributes')fixAttribute(record.target,record.attributeName);else for(const node of record.addedNodes)fixNode(node);}}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:attrs});
+fixNode(document.documentElement);
+document.addEventListener('submit',e=>{
  const form=e.target;if(!(form instanceof HTMLFormElement))return;
  const path=new URL(form.action,location.href).pathname;
  if(path.includes('/search')||path.endsWith('/cart/add')||form.matches('[data-node-type="commerce-add-to-cart-form"]'))return;
